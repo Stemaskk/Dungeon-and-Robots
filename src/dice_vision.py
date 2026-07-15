@@ -171,13 +171,21 @@ def main():
     # ========================================================
 
     while robot_hp > 0 and player_hp > 0:
+        stable_count = 0
+        last_color = None
 
-        input("\nRoll the die, show it to the camera, then press Enter...")
+        while True:
+            color = robot_see_color(cam, detector)
 
-        detected_color = None
+            if color == last_color and color is not None:
+                stable_count += 1
+            else:
+                stable_count = 1
+                last_color = color
 
-        while detected_color is None:
-            detected_color = robot_see_color(cam, detector)
+            if stable_count >= 10:
+                detected_color = color
+                break
 
         # --- Player Turn ---
         damage = COLOR_DAMAGE[detected_color]
