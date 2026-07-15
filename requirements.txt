@@ -4,3 +4,6 @@ openai
 pyttsx3
 python-dotenv
 pytest
+pyserial
+dynamixel-sdk
+git+https://teaching.csap.snu.ac.kr/first-steps-in-programming-a-humanoid-ai-robot/snu-isp-2026/tools/gretchen.git#subdirectory=course_material/lib
