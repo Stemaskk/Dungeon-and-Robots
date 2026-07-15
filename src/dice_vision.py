@@ -4,11 +4,12 @@ Owner: X
 """
 
 # Import required modules
+from time import time
+
 import cv2
-from dice_vision import SquareDetector
 import imutils
 import random 
-from workspace.gretchen.course_material.lib.src.gretchen import camera
+from gretchen.camera import Camera
 
 
 
@@ -26,10 +27,10 @@ class SquareDetector:
         self.green_upper = (90, 255, 255)
 
         # Red HSV range (split into two ranges)
-        self.red_lower = (0, 100, 50)
+        self.red_lower = (0, 180, 50)
         self.red_upper = (10, 255, 255)
 
-        self.red_lower2 = (170, 100, 50)
+        self.red_lower2 = (170, 180, 50)
         self.red_upper2 = (180, 255, 255)
 
     def detect(self, frame):
@@ -46,6 +47,10 @@ class SquareDetector:
         green_mask = cv2.inRange(hsv, self.green_lower, self.green_upper)
         red_mask1 = cv2.inRange(hsv, self.red_lower, self.red_upper)
         red_mask2 = cv2.inRange(hsv, self.red_lower2, self.red_upper2)
+
+        # cv2.imshow("Blue Mask", blue_mask)
+        # cv2.imshow("Green Mask", green_mask)
+        # cv2.imshow("Red Mask", red_mask1 + red_mask2)
 
         masks = {
             "blue": blue_mask,
@@ -141,8 +146,8 @@ def robot_see_color(camera, detector):
 def main():
 
     # Initialize camera
-    camera = camera.Camera(0)
-    camera.start()
+    cam = Camera(0)
+    cam.start()
 
     # Initialize detector
     detector = SquareDetector()
@@ -160,19 +165,28 @@ def main():
     # Colors
     COLOR_DAMAGE = {"blue": 0, "green": 1, "red": 2}
 
+
     # ========================================================
     # Game Loop
     # ========================================================
 
     while robot_hp > 0 and player_hp > 0:
+
+        input("\nRoll the die, show it to the camera, then press Enter...")
+
+        detected_color = None
+
+        while detected_color is None:
+            detected_color = robot_see_color(cam, detector)
+
         # --- Player Turn ---
-        detected_color = robot_see_color(camera, detector)
-        if detected_color in COLOR_DAMAGE:
-            damage = COLOR_DAMAGE[detected_color]
-            robot_hp -= damage
-            player_turn += 1
-            print(f"Player attacks with {detected_color}! Robot takes {damage} damage.")
-            print(f"Robot HP: {robot_hp}")
+        damage = COLOR_DAMAGE[detected_color]
+        robot_hp -= damage
+        player_turn += 1
+
+        print(f"Player attacks with {detected_color} damage! Robot takes {damage} damage.")
+        print(f"Robot HP: {robot_hp}")
+
         if robot_hp <= 0:
             break
 
@@ -182,6 +196,7 @@ def main():
         robot_turn += 1
         print(f"Evil Robot attacks! Player takes {damage} damage.")
         print(f"Player HP: {player_hp}")
+        
 
     # ========================================================
     # End Game
