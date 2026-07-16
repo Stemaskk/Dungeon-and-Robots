@@ -2,3 +2,7 @@
 
 Owner: M
 """
+
+from gesture import Gesture
+
+gesture = Gesture()
