@@ -8,3 +8,9 @@ pyserial
 dynamixel-sdk
 git+https://teaching.csap.snu.ac.kr/first-steps-in-programming-a-humanoid-ai-robot/snu-isp-2026/tools/gretchen.git#subdirectory=course_material/lib
 imutils
+lxml==6.1.1
+packaging==26.2
+pygame==2.6.1
+PyQt5==5.15.11
+PyQt5-Qt5==5.15.19
+PyQt5_sip==12.18.0
