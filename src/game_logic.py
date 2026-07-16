@@ -56,7 +56,3 @@ class LifePoints:
         if self.player <= 0:
             return "gretchen"
         return None
-
-from gesture import Gesture
-
-gesture = Gesture()
