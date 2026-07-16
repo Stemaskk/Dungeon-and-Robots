@@ -1,14 +1,16 @@
 """Entry point — wires up the orchestrator once the pieces below exist."""
 
+from lib.src.gretchen.camera import Camera
 from src.game_logic import Move
 from src.orchestrator import Orchestrator
 from src.narrator import Narrator
+from src.gesture import Gesture
 
 
 def get_player_move():
     """Stand-in for gesture.py — always plays rock for now."""
-    return Move.ROCK
-
+    gesture = Gesture()
+    return gesture.rps()
 
 def get_dice_color():
     """Stand-in for dice_vision.py — always rolls red for now."""
