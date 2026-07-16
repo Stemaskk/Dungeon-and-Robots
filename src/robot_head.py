@@ -3,6 +3,9 @@
 Owner: T
 """
 
+from gretchen.robot import Robot
+import time
+
 def main():
     # Initalize & start robot
     #Device path to motor, camera
@@ -31,7 +34,7 @@ def player_won_animation(robot,
 
          robot.move(-shake_angle, head_down)
          time.sleep(pause)
-         
+
          robot.move(0, head_down)
          time.sleep(0.05)
 
