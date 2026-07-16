@@ -20,8 +20,8 @@ class GameState(Enum):
 
 # TODO: get_start_signal, get_player_move and get_dice_color are mocked for now - need to change
 class Orchestrator:
-    def __init__(self, get_start_signal, get_player_move, get_dice_color, narrate):
-        self.state = GameState.WAITING_FOR_START
+    def __init__(self, get_start_signal, get_player_move, get_dice_color, narrate, start_state=GameState.WAITING_FOR_START):
+        self.state = start_state
         self.get_start_signal = get_start_signal
         self.get_player_move = get_player_move
         self.get_dice_color = get_dice_color

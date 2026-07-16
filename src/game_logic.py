@@ -32,8 +32,8 @@ def gretchen_move():
 # Dice colour -> damage dealth
 DICE_DAMAGE = {
     "red": 2,
-    "blue": 1,
-    "green": 0
+    "green": 1,
+    "blue": 0
 }
 
 STARTING_LIFE = 5

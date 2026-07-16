@@ -8,7 +8,6 @@ from time import time
 
 import cv2
 import imutils
-import random 
 from gretchen.camera import Camera
 
 
@@ -125,7 +124,12 @@ class SquareDetector:
 def robot_see_color(camera, detector):
     """Capture image from camera and detect square color."""
 
-    ret, img, timestamp = camera.getImage()
+    try:
+        ret, img, timestamp = camera.getImage()
+    except cv2.error:
+        # camera.getImage() can throw on an occasional bad/empty read instead
+        # of returning ret=False - treat it the same as a failed read.
+        return None
 
     if not ret:
         return None
@@ -139,85 +143,22 @@ def robot_see_color(camera, detector):
     return color
 
 
-
-# ============================================================
-# Main Program
-# ============================================================
-def main():
-
-    # Initialize camera
-    cam = Camera(0)
-    cam.start()
-
-    # Initialize detector
+def get_dice_color(cam):
     detector = SquareDetector()
+    stable_count = 0
+    last_color = None
 
-    # ========================================================
-    # Game Variables
-    # ========================================================
+    while True:
+        color = robot_see_color(cam, detector)
 
-    robot_hp = 3
-    player_hp = 5
+        if color == last_color and color is not None:
+            stable_count += 1
+        else:
+            stable_count = 1
+            last_color = color
 
-    robot_turn = 0
-    player_turn = 0
-
-    # Colors
-    COLOR_DAMAGE = {"blue": 0, "green": 1, "red": 2}
-
-
-    # ========================================================
-    # Game Loop
-    # ========================================================
-
-    while robot_hp > 0 and player_hp > 0:
-        stable_count = 0
-        last_color = None
-
-        while True:
-            color = robot_see_color(cam, detector)
-
-            if color == last_color and color is not None:
-                stable_count += 1
-            else:
-                stable_count = 1
-                last_color = color
-
-            if stable_count >= 10:
-                detected_color = color
-                break
-
-        # --- Player Turn ---
-        damage = COLOR_DAMAGE[detected_color]
-        robot_hp -= damage
-        player_turn += 1
-
-        print(f"Player attacks with {detected_color} damage! Robot takes {damage} damage.")
-        print(f"Robot HP: {robot_hp}")
-
-        if robot_hp <= 0:
+        if stable_count >= 10:
+            detected_color = color
             break
 
-        # --- Robot Turn ---
-        damage = random.randint(0, 2)
-        player_hp -= damage
-        robot_turn += 1
-        print(f"Evil Robot attacks! Player takes {damage} damage.")
-        print(f"Player HP: {player_hp}")
-        
-
-    # ========================================================
-    # End Game
-    # ========================================================
-    if robot_hp <= 0:
-        print("Player who is super powerful destroyed evil Gretchen!")
-    else:
-        print("Robot took over the world....")
-
-    cv2.destroyAllWindows()
-
-# ============================================================
-# Program Entry Point
-# ============================================================
-if __name__ == '__main__':
-    main()
+    return detected_color

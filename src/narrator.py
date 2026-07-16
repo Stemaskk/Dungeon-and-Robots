@@ -37,11 +37,11 @@ SYSTEM_PROMPT = (
 STAGE_PROMPTS = {
     "intro": "Narrate the player entering a dark dungeon and encountering you, an evil Gretchen robot.",
     "rps_round": "The player just threw {player_move}, you (Gretchen) threw {gretchen_move}, and the result was: {result}. React in character to this specific round.",
-    "rps_win": "Narrate Evil Gretchen exploding after losing rock-paper-scissors, and introduce a bigger, meaner Boss Gretchen waiting ahead.",
-    "rps_lose": "Narrate Evil Gretchen gloating as the player is defeated.",
+    "rps_win": "The player just won rock-paper-scissors. Narrate Evil Gretchen exploding in defeat, and introduce a bigger, meaner Boss Gretchen waiting ahead. Make it unambiguous that the player won.",
+    "rps_lose": "The player just lost rock-paper-scissors and dies. Narrate Evil Gretchen gloating as the player falls dead. Make it unambiguous that the player lost and died.",
     "dice_round": "{roller} just rolled a {dice_color} die. Player life is now {player_life}, Gretchen life is now {gretchen_life}. React in character to this specific roll.",
-    "boss_win": "Narrate Boss Gretchen self-destructing after losing the dice battle, and reveal the treasure.",
-    "boss_lose": "Narrate Boss Gretchen gloating as the player is defeated, treasure just out of reach.",
+    "boss_win": "The player just won the dice battle. Narrate Boss Gretchen self-destructing in defeat, and reveal the treasure. Make it unambiguous that the player won.",
+    "boss_lose": "The player just lost the dice battle and dies. Narrate Boss Gretchen gloating as the player falls dead, treasure just out of reach. Make it unambiguous that the player lost and died.",
 }
 
 
