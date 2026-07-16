@@ -165,12 +165,12 @@ These behaviors are triggered through the game controller and executed by the ro
 
 ---
 
-# Discussion
+# Discussion: Challenges
 
 ## M
-## A
-## T
-## Lilla Megyeri 
+### A
+### T
+### Lilla Megyeri 
 
 My main coding work focused on dice color detection and the game logic. I faced several challenges while developing this part of the project.
 
