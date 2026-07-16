@@ -54,6 +54,7 @@ class Narrator:
         print(f"Gretchen: {text}")
         self.is_speaking = True
         engine = pyttsx3.init()
+        engine.setProperty('voice', 'com.apple.speech.synthesis.voice.Trinoids')
         engine.setProperty('rate', 150)
         engine.say(text)
         engine.runAndWait()
