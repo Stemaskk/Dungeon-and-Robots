@@ -108,6 +108,7 @@ class Gesture:
             cv2.imshow("Frame", img)
 
             if frame is not None:
+                self.close()
                 return frame
 
     def close(self):
