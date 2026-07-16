@@ -9,6 +9,8 @@ import cv2
 import mediapipe as mp
 from pathlib import Path
 
+from gretchen.camera import Camera
+
 class Gesture:
 
     GESTURE_TO_RPS = {
@@ -88,6 +90,26 @@ class Gesture:
         else:
             return self.GESTURE_TO_RPS.get(result.gestures[0][0].category_name)
 
+    def rps(self):
+        """
+        Detects hand gestures in the given image and returns the corresponding Rock-Paper-Scissors value.
+
+        Args:
+            frame: The input frame in which to detect hand gestures.
+
+        Returns:
+            The corresponding Rock-Paper-Scissors value.
+        """
+        while True:
+            ret, img, timestamp = Camera.getImage()
+            frame = self.detect(img)
+
+            # Display image
+            cv2.imshow("Frame", img)
+
+            if frame is not None:
+                self.close()
+                return frame
 
     def close(self):
         """

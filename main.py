@@ -6,6 +6,7 @@ from src.game_logic import Move
 from src.orchestrator import GameState, Orchestrator
 from src.narrator import Narrator
 from src.dice_vision import get_dice_color as detect_dice_color
+from src.gesture import Gesture
 from gretchen.camera import Camera
 
 cam = Camera(0)
@@ -13,8 +14,8 @@ cam.start()
 
 def get_player_move():
     """Stand-in for gesture.py — always plays rock for now."""
-    return Move.ROCK
-
+    gesture = Gesture()
+    return gesture.rps()
 
 def get_start_signal():
     return True

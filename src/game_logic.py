@@ -7,9 +7,9 @@ from enum import Enum
 import random
 
 class Move(Enum):
-    ROCK = "rock"
-    PAPER = "paper"
-    SCISSORS = "scissors"
+    ROCK = "ROCK"
+    PAPER = "PAPER"
+    SCISSORS = "SCISSORS"
 
 # What each move beats
 BEATS = {
