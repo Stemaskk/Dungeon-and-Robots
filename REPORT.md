@@ -74,8 +74,8 @@ The robot Gretchen acts as both the narrator and a physical game character.
 
 Robot motion commands are triggered by game events. Examples include:
 
-- Nodding to indicate approval or victory
-- Shaking its head to indicate defeat or player loss
+- Nodding to indicate victory
+- Shaking its head to indicate defeat
 
 These behaviors help bring Gretchen into the game as a physical presence rather than leaving it as only software.
 
@@ -158,8 +158,8 @@ Robot actions are linked directly to game outcomes.
 
 Examples include:
 
-- Celebrating when the player wins
-- Shaking its head when the player is defeated
+- Shaking its head in defeat when the player wins
+- Celebrating when the player is defeated
 
 These behaviors are triggered through the game controller and executed by the robot in real time.
 
