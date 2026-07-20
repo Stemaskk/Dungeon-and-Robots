@@ -18,14 +18,14 @@ class GameState(Enum):
     GAME_OVER = "game_over"
     TREASURE = "treasure"
 
-# TODO: get_start_signal, get_player_move and get_dice_color are mocked for now - need to change
 class Orchestrator:
-    def __init__(self, get_start_signal, get_player_move, get_dice_color, narrate, start_state=GameState.WAITING_FOR_START):
+    def __init__(self, get_start_signal, get_player_move, get_dice_color, narrate, react, start_state=GameState.WAITING_FOR_START):
         self.state = start_state
         self.get_start_signal = get_start_signal
         self.get_player_move = get_player_move
         self.get_dice_color = get_dice_color
         self.narrate = narrate
+        self.react = react
         self.life = LifePoints()
 
 
@@ -72,9 +72,11 @@ class Orchestrator:
             print("Tie! You need to play again.")
         if result == "player":
             self.narrate("rps_win")
+            self.react("won")
             self.state = GameState.BOSS_FIGHT
         else:
             self.narrate("rps_lose")
+            self.react("lost")
             self.state = GameState.GAME_OVER
 
 
@@ -94,7 +96,9 @@ class Orchestrator:
             current = "player" if current != "player" else "gretchen"
         if (self.life.winner() == "player"):
             self.narrate("boss_win")
+            self.react("won")
             self.state = GameState.TREASURE
         else:
             self.narrate("boss_lose")
+            self.react("lost")
             self.state = GameState.GAME_OVER
