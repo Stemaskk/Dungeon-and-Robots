@@ -8,8 +8,7 @@ import cv2
 
 import mediapipe as mp
 from pathlib import Path
-
-from gretchen.camera import Camera
+from src.game_logic import Move
 
 class Gesture:
 
@@ -40,7 +39,7 @@ class Gesture:
             min_hand_detection_confidence=0.5,
             min_hand_presence_confidence=0.5,
             min_tracking_confidence=0.5,
-            canned_gesture_classifier_options=mp.tasks.vision.GestureRecognizerClassifierOptions(max_results = 1, score_threshold=confidence_threshold, category_allowlist=["Closed_Fist", "Open_Palm", "Victory",]),
+            canned_gesture_classifier_options=mp.tasks.components.processors.ClassifierOptions(max_results = 1, score_threshold=confidence_threshold, category_allowlist=["Closed_Fist", "Open_Palm", "Victory",]),
         )
 
         self.recognizer = (mp.tasks.vision.GestureRecognizer.create_from_options(options))
@@ -90,7 +89,7 @@ class Gesture:
         else:
             return self.GESTURE_TO_RPS.get(result.gestures[0][0].category_name)
 
-    def rps(self):
+    def rps(self, camera):
         """
         Detects hand gestures in the given image and returns the corresponding Rock-Paper-Scissors value.
 
@@ -101,15 +100,15 @@ class Gesture:
             The corresponding Rock-Paper-Scissors value.
         """
         while True:
-            ret, img, timestamp = Camera.getImage()
+            ret, img, timestamp = camera.getImage()
             frame = self.detect(img)
 
             # Display image
             cv2.imshow("Frame", img)
+            cv2.waitKey(1)
 
             if frame is not None:
-                self.close()
-                return frame
+                return Move(frame)
 
     def close(self):
         """
