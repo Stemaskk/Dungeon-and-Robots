@@ -2,7 +2,7 @@
 
 ## Abstract
 
-This project presents an interactive *Dungeons & Dragons*-inspired game that combines computer vision, dynamic gesture recognition, large language model (LLM) narration, game logic, and human–robot interaction.
+This project presents an interactive _Dungeons & Dragons_-inspired game that combines computer vision, dynamic gesture recognition, large language model (LLM) narration, game logic, and human–robot interaction.
 
 The game centers on two main roles:
 
@@ -19,7 +19,7 @@ The purpose of this project is to demonstrate the integration of artificial inte
 
 # Introduction and Project Goals
 
-Interactive entertainment systems increasingly combine artificial intelligence, computer vision, and robotics to create immersive user experiences. This project explores how these technologies can be integrated into an imagination-based game inspired by the tabletop role-playing game *Dungeons & Dragons*.
+Interactive entertainment systems increasingly combine artificial intelligence, computer vision, and robotics to create immersive user experiences. This project explores how these technologies can be integrated into an imagination-based game inspired by the tabletop role-playing game _Dungeons & Dragons_.
 
 The game places the player in a dungeon where they must confront an evil robot guardian named Gretchen. Instead of using traditional input devices, the player interacts with the system through hand gestures. Gameplay consists of two major stages:
 
@@ -130,11 +130,11 @@ Each participant starts with a predefined amount of health points. During each t
 
 ### Dice Outcomes
 
-| Dice Color | Damage |
-|------------|---------|
-| Red | High Damage (-2) |
-| Green | Low Damage (-1) |
-| Blue | Critical Miss (0) |
+| Dice Color | Damage            |
+| ---------- | ----------------- |
+| Red        | High Damage (-2)  |
+| Green      | Low Damage (-1)   |
+| Blue       | Critical Miss (0) |
 
 For Gretchen, a random number generator determines the damage dealt to the player each round, ranging from 0 to 2 damage.
 
@@ -167,10 +167,15 @@ These behaviors are triggered through the game controller and executed by the ro
 
 # Discussion: Challenges
 
-## M
+## Maryam Al-Farooq
+
+I primarily worked on the game logic, the LLM prompts and TTS, and tying all the components together. Overall, I found the most difficult part of this was prompt engineering the LLM. This is because initially I didn't provide it with enough information (e.g. life points, whose move it is, past history). This led to the LLM hallucinating moves and trying to do its own calculations, and I thought there was a problem with the game logic itself rather than a hallucination. This took some time to figure out, but I solved it by adding a lot more detail to the prompts. Another challenge stemmed from the relatively short project timeline and small scope of the project, meaning we didn't agree on an interface before starting to code. This caused some type mismatches, particularly with `Move` and `gesture.py`. We fixed this by casting - not the best solution but it works.
+
 ### A
+
 ### T
-### Lilla Megyeri 
+
+### Lilla Megyeri
 
 My main coding work focused on dice color detection and the game logic. I faced several challenges while developing this part of the project.
 

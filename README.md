@@ -11,24 +11,48 @@ The project utilizes computer vision, dynamic gesture recognition, game logic, a
 ## Layout
 
 ```
-main.py              entry point
+main.py                    entry point — wires the pieces together and runs the game
+requirements.txt           Python dependencies
 src/
-  orchestrator.py     game state machine (M)
-  game_logic.py        RPS resolution, dice damage, life points (M)
-  narrator.py          LLM narration + TTS trigger (M)
-  gesture.py            hand gesture recognition (A)
-  dice_vision.py         colored dice detection via camera (X)
-  robot_head.py           pan/tilt reactions (T)
-  audio.py                laptop-speaker playback + music/TTS switching (T)
+  orchestrator.py          game state machine
+  game_logic.py            RPS resolution, dice damage, life points
+  narrator.py              LLM narration (OpenAI) + TTS playback
+  gesture.py               hand gesture recognition (start signal + RPS)
+  dice_vision.py           colored dice detection via camera
+  robot_head.py            Gretchen's pan/tilt reactions
+  audio_manager.py         speaker playback + music/TTS switching
+  gesture_model/
+    gesture_recognizer.task   MediaPipe gesture model
+  audio/sounds/            background music and sound effects (.mp3)
+tests/                     test suite
 ```
+
+## Requirements
+
+**Hardware** — this game drives a physical [Gretchen](https://teaching.csap.snu.ac.kr/) robot:
+
+- A Gretchen robot connected over USB serial. The port is currently hardcoded in `main.py` as `/dev/tty.usbserial-FT94EP38` — update this to match your machine (`ls /dev/tty.usbserial-*` on macOS).
+- The robot's onboard camera (used for both gesture and dice detection).
+- Speakers for narration and music.
+
+**Software**
+
+- Python 3.14 (the version this project is developed against).
+- macOS: install SDL2 first — `pygame` has no prebuilt wheel for recent Python versions and needs it to compile from source:
+
+  ```
+  brew install sdl2 sdl2_image sdl2_mixer sdl2_ttf
+  ```
+
+- Access to the SNU teaching GitLab, since `requirements.txt` pulls the `gretchen` robot library directly from it:
+
+  ```
+  git+https://teaching.csap.snu.ac.kr/.../gretchen.git
+  ```
+
+  Make sure your git credentials for `teaching.csap.snu.ac.kr` are set up before installing, or the `pip install` will fail on that line.
 
 ## Setup
-
-On macOS, install SDL2 first — `pygame` has no prebuilt wheel for recent Python versions and needs it to compile from source:
-
-```
-brew install sdl2 sdl2_image sdl2_mixer sdl2_ttf
-```
 
 ```
 python -m venv .venv
@@ -36,102 +60,36 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Narrator needs an OpenAI API key: `export OPENAI_API_KEY=...` (or put it in a `.env` file — it's gitignored).
-
-## Old GitLab template (reference, delete once repo is set up)
-
-## Add your files
-
-- [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-- [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+The narrator needs an OpenAI API key (it uses the `gpt-5.4-nano` model plus `pyttsx3` for text-to-speech). Set it before running:
 
 ```
-cd existing_repo
-git remote add origin https://teaching.csap.snu.ac.kr/timgallus/dungeons-and-robots.git
-git branch -M main
-git push -uf origin main
+export OPENAI_API_KEY=...
 ```
 
-## Integrate with your tools
+or put it in a `.env` file in the project root — `.env` is gitignored:
 
-- [Set up project integrations](https://teaching.csap.snu.ac.kr/timgallus/dungeons-and-robots/-/settings/integrations)
+```
+OPENAI_API_KEY=...
+```
 
-## Collaborate with your team
+## Running the game
 
-- [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-- [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-- [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-- [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-- [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+With the robot plugged in and the virtual environment active:
 
-## Test and Deploy
+```
+python main.py
+```
 
-Use the built-in continuous integration in GitLab.
+The game waits for the start hand gesture, then runs through Rock–Paper–Scissors and (on a win) the boss fight.
 
-- [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-- [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-- [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-- [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-- [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+To skip straight to the boss fight while developing, use:
 
----
+```
+python main.py --boss-fight
+```
 
-# Editing this README
+## Tests
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-
-Choose a self-explaining name for your project.
-
-## Description
-
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-
-Show your appreciation to those who have contributed to the project.
-
-## License
-
-For open source projects, say how it is licensed.
-
-## Project status
-
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+```
+pytest
+```
