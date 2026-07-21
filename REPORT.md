@@ -177,7 +177,15 @@ I was put on the task of implementing hand gesture capture for rock paper scisso
 
 ### T
 
-### Lilla Megyeri
+I worked on the Audio Manager and the robot head movements.
+
+For the audio, I implemented the background music, sound effects for winning and losing, and a simple event-based system to control playback. I also added volume fading so the background music is reduced while the LLM narrator is speaking and restored afterwards.
+
+For the robot, I created the head animations used during the game. Gretchen shakes its head when the player wins and nods when the player loses. The movement speed, angle, and number of repetitions can all be adjusted easily.
+
+The biggest challenge was making the robot's movements look natural. After some testing, I found that moving the head back to the center between left and right movements made the animation much smoother. Another challenge was keeping the code modular so the audio and robot behavior could be triggered independently from the main game logic.
+
+### Lilla Megyeri 
 
 My main coding work focused on dice color detection and the game logic. I faced several challenges while developing this part of the project. One of the first issues was detecting the color red. After some research, I learned that red falls into two separate ranges in the color space, so I needed to create two different masks and combine them. Another challenge was getting Gretchen to recognize when an object was actually a square. I was able to detect quadrilaterals with roughly equal sides, but not always true squares, which sometimes caused random background objects to be detected instead. I also had trouble with the color ranges being too broad. Since red is such a common color, I initially used a wide range to account for different lighting conditions, but that caused the system to detect too many unrelated objects. I solved this by narrowing the range and testing different shades of red until I found a more reliable setting.After that came the turn-based game logic. That part was relatively simple, but I still had to determine how to convert each detected color into a numerical value for damage.
 
