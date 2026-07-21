@@ -179,27 +179,9 @@ I was put on the task of implementing hand gesture capture for rock paper scisso
 
 ### Lilla Megyeri
 
-My main coding work focused on dice color detection and the game logic. I faced several challenges while developing this part of the project.
+My main coding work focused on dice color detection and the game logic. I faced several challenges while developing this part of the project. One of the first issues was detecting the color red. After some research, I learned that red falls into two separate ranges in the color space, so I needed to create two different masks and combine them. Another challenge was getting Gretchen to recognize when an object was actually a square. I was able to detect quadrilaterals with roughly equal sides, but not always true squares, which sometimes caused random background objects to be detected instead. I also had trouble with the color ranges being too broad. Since red is such a common color, I initially used a wide range to account for different lighting conditions, but that caused the system to detect too many unrelated objects. I solved this by narrowing the range and testing different shades of red until I found a more reliable setting.After that came the turn-based game logic. That part was relatively simple, but I still had to determine how to convert each detected color into a numerical value for damage.
 
-One of the first issues was detecting the color red. After some research, I learned that red falls into two separate ranges in the color space, so I needed to create two different masks and combine them.
-
-Another challenge was getting Gretchen to recognize when an object was actually a square. I was able to detect quadrilaterals with roughly equal sides, but not always true squares, which sometimes caused random background objects to be detected instead.
-
-I also had trouble with the color ranges being too broad. Since red is such a common color, I initially used a wide range to account for different lighting conditions, but that caused the system to detect too many unrelated objects. I solved this by narrowing the range and testing different shades of red until I found a more reliable setting.
-
-After that came the turn-based game logic. That part was relatively simple, but I still had to determine how to convert each detected color into a numerical value for damage.
-
-The most challenging and interesting part, however, was gameplay timing. At first, once Gretchen started running, the game would end almost immediately because it kept detecting colors and applying damage too quickly. I needed to slow the process down, so I added a sleep function.
-
-However, that still did not fully solve the problem because the system could continue detecting random background objects instead of the actual dice.
-
-I was also concerned that during gameplay I might not have enough time to show the correct dice color, or that the delay between rolls would become too long.
-
-To address this, I briefly considered using an input function where I would press Enter each time I wanted the system to detect a color. While this worked, it made the camera less visible and the game feel less automatic.
-
-After getting some advice, I created a stability count instead. This required the system to detect the same color consistently for a certain number of frames before confirming it as a valid detection.
-
-This helped reduce background noise and ensured the dice color was clearly visible before it was accepted. It also allowed me to keep the camera view active so I could verify that I was showing the correct color.
+The most challenging and interesting part, however, was gameplay timing. At first, once Gretchen started running, the game would end almost immediately because it kept detecting colors and applying damage too quickly. I needed to slow the process down, so I added a sleep function. However, that still did not fully solve the problem because the system could continue detecting random background objects instead of the actual dice. I was also concerned that during gameplay I might not have enough time to show the correct dice color, or that the delay between rolls would become too long. To address this, I briefly considered using an input function where I would press Enter each time I wanted the system to detect a color. While this worked, it made the camera less visible and the game feel less automatic. After getting some advice, I created a stability count instead. This required the system to detect the same color consistently for a certain number of frames before confirming it as a valid detection. This helped reduce background noise and ensured the dice color was clearly visible before it was accepted. It also allowed me to keep the camera view active so I could verify that I was showing the correct color.
 
 ---
 

@@ -24,7 +24,6 @@ src/
   gesture_model/
     gesture_recognizer.task   MediaPipe gesture model
   audio/sounds/            background music and sound effects (.mp3)
-tests/                     test suite
 ```
 
 ## Requirements
@@ -88,8 +87,9 @@ To skip straight to the boss fight while developing, use:
 python main.py --boss-fight
 ```
 
-## Tests
+## AI Usage
 
-```
-pytest
-```
+This project uses AI in two distinct ways:
+
+- **In the game itself:** the narrator (`src/narrator.py`) calls the OpenAI API (`gpt-5.4-nano`) at runtime to generate Gretchen's contextual dialogue, and MediaPipe's gesture recognizer (`src/gesture_model/`) classifies the player's hand poses.
+- **During development:** AI coding assistants (Claude, ChatGPT) were used to help write and refactor parts of the codebase and documentation. Less than 20% of the codebase was written by AI. All AI-generated contributions were reviewed and tested by the team.
