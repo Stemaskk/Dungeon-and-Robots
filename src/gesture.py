@@ -29,7 +29,7 @@ class Gesture:
         (0, 17)
     )
 
-    def __init__(self, confidence_threshold=0.70, hold_time=2.0):
+    def __init__(self, confidence_threshold=0.7, hold_time=2.0):
         """
         Initializes the Gesture class. Referenced from: https://developers.google.com/edge/mediapipe/solutions/vision/gesture_recognizer/python#video
 
@@ -105,7 +105,7 @@ class Gesture:
         else:
             return self.GESTURE_TO_RPS.get(self.last_result.gestures[0][0].category_name)
 
-    def rps(self, camera):
+    def rps(self, camera, start=False):
         """
         Detects hand gestures in the given image and returns the corresponding Rock-Paper-Scissors value.
 
@@ -128,7 +128,10 @@ class Gesture:
             if frame is None:
                 current_gesture = None
                 gesture_start_time = 0.0
-                message = "Show ROCK, PAPER, or SCISSORS"
+                if start:
+                    message = "Show PAPER to start the game"
+                else:
+                    message = "Show ROCK, PAPER, or SCISSORS"
 
             elif frame != current_gesture:
                 current_gesture = frame
@@ -142,7 +145,7 @@ class Gesture:
                 message = (f"Hold for {remaining_time:.1f}s")
 
 
-            if elapsed_time >= self.hold_time:
+            if remaining_time <= 0.0:
                 cv2.destroyWindow("Frame")
                 return frame
 
@@ -162,7 +165,7 @@ class Gesture:
         Returns:
             True if the shown gesture was paper, False for rock or scissors.
         """
-        return self.rps(camera) == Move.PAPER
+        return Move(self.rps(camera,True)) == Move.PAPER
     
 
     def draw(self, frame):
