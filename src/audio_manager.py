@@ -80,9 +80,8 @@ def handle_event(event):
         fade_volume(MUSIC_VOLUME,duration=2)
 
     elif event == "rps_won":
-        # Evil Gretchen destroyed: play the defeat sting, then return to the dungeon track
         stop_music()
-        play_music("gretchen_defeated.mp3")
+        play_music("victory.mp3")
         while pygame.mixer.music.get_busy():
             time.sleep(0.1)
         play_music(DUNGEON_MUSIC, loop=True, volume=MUSIC_VOLUME)

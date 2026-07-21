@@ -20,7 +20,7 @@ initialize_audio()
 gesture = Gesture()
 
 def get_start_signal():
-    return True
+    return gesture.wait_for_start(cam)
 
 if __name__ == "__main__":
     narrator = Narrator()

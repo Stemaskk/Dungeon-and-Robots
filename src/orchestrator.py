@@ -46,16 +46,18 @@ class Orchestrator:
     
 
     def _handle_waiting_for_start(self):
-        self.narrate("waiting_for_start")
+        # Wait for the player's start gesture (paper) FIRST ...
+        while not self.get_start_signal():
+            pass
+        # ... then greet them over the music and move on.
         self.play_audio("game_started")
-        while True:
-            if self.get_start_signal():
-                self.state = GameState.INTRO
-                break
+        self.narrate("waiting_for_start")
+        self.state = GameState.INTRO
 
 
     def _handle_intro(self):
         self.narrate("intro")
+        time.sleep(1) # player needs to reset 
         self.state = GameState.RPS
 
 
@@ -75,7 +77,7 @@ class Orchestrator:
                 break
             print("Tie! You need to play again.")
         if result == "player":
-            self.play_audio("rps_won")   # gretchen_defeated 
+            self.play_audio("rps_won")   # victory 
             self.react("won")            # head shake as Evil Gretchen dies
             self.narrate("rps_win")      # "I'm dying — but now face Boss Gretchen"
             self.state = GameState.BOSS_FIGHT

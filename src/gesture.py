@@ -110,6 +110,16 @@ class Gesture:
             if frame is not None:
                 return Move(frame)
 
+    def wait_for_start(self, camera):
+        """
+        Blocks until the player shows a hand gesture, and reports whether it was
+        paper (hand up) — the signal to start the game.
+
+        Returns:
+            True if the shown gesture was paper, False for rock or scissors.
+        """
+        return self.rps(camera) == Move.PAPER
+
     def close(self):
         """
         Release the MediaPipe recognizer. Run when the Gesture class is no longer needed to free up resources.

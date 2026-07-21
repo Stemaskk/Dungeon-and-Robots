@@ -17,7 +17,7 @@ from src.audio_manager import handle_event as play_audio
 load_dotenv()
 
 FALLBACK_LINES = {
-            "waiting_for_start": "Do you wish to enter the dungeon?",
+            "waiting_for_start": "You've raised your hand. There is no backing out now.",
             "intro": "You enter a dark dungeon and encounter an evil Gretchen, who challenges you to a single decisive round of rock-paper-scissors. Win, and you may pass. Lose, and you die where you stand.",
             "rps_round": "Not bad... for a human.",
             "rps_win": "Evil Gretchen sputters and dies in a shower of sparks. You won this round — but a far larger, meaner Boss Gretchen now blocks the way ahead.",
@@ -49,9 +49,9 @@ SYSTEM_PROMPT = (
 
 STAGE_PROMPTS = {
     "waiting_for_start": (
-        "The player is standing at the entrance to your dungeon, not yet inside. "
-        "In one or two short sentences, menacingly dare or invite them to step in and face you. "
-        "Do not explain any rules yet — just lure them in."
+        "The player has just raised their hand to begin — they have chosen to face you, and there is no backing out now. "
+        "In one or two short sentences, menacingly acknowledge that they've committed to this. "
+        "Do NOT describe them entering the dungeon and do NOT explain any rules yet — that comes immediately after."
     ),
     "intro": (
         "Narrate the player entering a dark dungeon and encountering you, an evil Gretchen robot. "
