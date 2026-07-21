@@ -173,6 +173,8 @@ I primarily worked on the game logic, the LLM prompts and TTS, and tying all the
 
 ### A
 
+I was put on the task of implementing hand gesture capture for rock paper scissors. Utilizing MediaPipe library and their dataset, I was able to detect the three different gestures without having to train the model excessively. Using features in CV, I created dot images to emphasize hand movements, as well as put descriptive text that helps users understand how the rock paper scissor works, like adding the timer on the top since the user needs to put up their gestures for 2 seconds for the program to detect it. Cooperating with Maryam, we debugged issues that came from the difference in each others code, so the program would run smoothly.
+
 ### T
 
 ### Lilla Megyeri
