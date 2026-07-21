@@ -57,7 +57,7 @@ class Gesture:
         self.recognizer = (mp.tasks.vision.GestureRecognizer.create_from_options(options))
         
         # Time is needed to ensure that the timestamp for each frame is unique, as well as not the previous one.
-        self.start_time = time.monotonic()g
+        self.start_time = time.monotonic()
         self.last_timestamp_ms = -1
 
         self.hold_time = hold_time
@@ -152,9 +152,6 @@ class Gesture:
             # Display image
             cv2.imshow("Frame", img)
             cv2.waitKey(1)
-
-            if frame is not None:
-                return Move(frame)
 
 
     def wait_for_start(self, camera):
