@@ -57,7 +57,7 @@ class Gesture:
         self.recognizer = (mp.tasks.vision.GestureRecognizer.create_from_options(options))
         
         # Time is needed to ensure that the timestamp for each frame is unique, as well as not the previous one.
-        self.start_time = time.monotonic()
+        self.start_time = time.monotonic()g
         self.last_timestamp_ms = -1
 
         self.hold_time = hold_time
