@@ -29,7 +29,7 @@ class Gesture:
         (0, 17)
     )
 
-    def __init__(self, confidence_threshold=0.70, hold_time=2.0):
+    def __init__(self, confidence_threshold=0.60, hold_time=2.0):
         """
         Initializes the Gesture class. Referenced from: https://developers.google.com/edge/mediapipe/solutions/vision/gesture_recognizer/python#video
 
@@ -141,10 +141,7 @@ class Gesture:
                 remaining_time = max(0.0, self.hold_time - elapsed_time)
                 message = (f"Hold for {remaining_time:.1f}s")
 
-
-            if elapsed_time >= self.hold_time:
-                cv2.destroyWindow("Frame")
-                return frame
+      
 
 
             cv2.putText(img, message, (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
@@ -152,6 +149,10 @@ class Gesture:
             # Display image
             cv2.imshow("Frame", img)
             cv2.waitKey(1)
+
+            if elapsed_time >= self.hold_time:
+                cv2.destroyWindow("Frame")
+                return frame
 
 
     def wait_for_start(self, camera):
@@ -162,7 +163,7 @@ class Gesture:
         Returns:
             True if the shown gesture was paper, False for rock or scissors.
         """
-        return self.rps(camera) == Move.PAPER
+        return Move(self.rps(camera)) == Move.PAPER
     
 
     def draw(self, frame):
