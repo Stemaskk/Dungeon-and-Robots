@@ -16,8 +16,11 @@ robot.start()
 
 initialize_audio()
 
-
 gesture = Gesture()
+
+def get_player_move():
+    gesture = Gesture()
+    return gesture.rps(cam)
 
 def get_start_signal():
     return gesture.wait_for_start(cam)
