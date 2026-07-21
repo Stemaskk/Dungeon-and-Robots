@@ -57,7 +57,7 @@ class Orchestrator:
 
     def _handle_intro(self):
         self.narrate("intro")
-        time.sleep(1) # player needs to reset 
+        time.sleep(0.05) # player needs to reset hand
         self.state = GameState.RPS
 
 

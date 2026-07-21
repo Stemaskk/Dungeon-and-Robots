@@ -126,12 +126,15 @@ def robot_see_color(camera, detector):
 
     try:
         ret, img, timestamp = camera.getImage()
+
     except cv2.error:
+        print("cv2.error")
         # camera.getImage() can throw on an occasional bad/empty read instead
         # of returning ret=False - treat it the same as a failed read.
         return None
 
     if not ret:
+        print("not ret")
         return None
 
     img, color = detector.detect(img)

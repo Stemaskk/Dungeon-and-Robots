@@ -8,6 +8,7 @@ from src.dice_vision import get_dice_color as detect_dice_color
 from src.robot_head import react 
 from src.audio_manager import initialize_audio, handle_event as play_audio
 from src.gesture import Gesture
+from src.game_logic import Move
 from gretchen.robot import Robot
 
 robot = Robot('/dev/tty.usbserial-FT94EP38', 0)
@@ -30,7 +31,7 @@ if __name__ == "__main__":
     start_state = GameState.BOSS_FIGHT if "--boss-fight" in sys.argv else GameState.WAITING_FOR_START
     game = Orchestrator(
         get_start_signal,
-        lambda: gesture.rps(cam),
+        lambda: Move(gesture.rps(cam)),
         lambda: detect_dice_color(cam),
         narrator.narrate,
         lambda outcome: react(robot, outcome),

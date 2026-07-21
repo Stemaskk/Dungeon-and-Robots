@@ -5,6 +5,7 @@ Owner: M
 
 from enum import Enum
 import random
+import sys
 
 class Move(Enum):
     ROCK = "ROCK"
@@ -25,8 +26,10 @@ def resolve_rps(player_move, gretchen_move):
     return "player" if BEATS[player_move] == gretchen_move else "gretchen"
 
 
-# Returns a random RPS move
+# Returns a random RPS move (or always SCISSORS in demo mode)
 def gretchen_rps_move():
+    if "--demo" in sys.argv:
+        return Move.SCISSORS
     return random.choice(list(Move))
 
 # Dice colour -> damage dealth

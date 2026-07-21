@@ -144,11 +144,6 @@ class Gesture:
                 remaining_time = max(0.0, self.hold_time - elapsed_time)
                 message = (f"Hold for {remaining_time:.1f}s")
 
-
-            if remaining_time <= 0.0:
-                cv2.destroyWindow("Frame")
-                return frame
-
             cv2.putText(img, message, (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
             
             # Display image
@@ -168,7 +163,7 @@ class Gesture:
         Returns:
             True if the shown gesture was paper, False for rock or scissors.
         """
-        return Move(self.rps(camera)) == Move.PAPER
+        return Move(self.rps(camera, True)) == Move.PAPER
     
 
     def draw(self, frame):
