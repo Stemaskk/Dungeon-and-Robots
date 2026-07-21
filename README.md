@@ -24,6 +24,12 @@ src/
 
 ## Setup
 
+On macOS, install SDL2 first — `pygame` has no prebuilt wheel for recent Python versions and needs it to compile from source:
+
+```
+brew install sdl2 sdl2_image sdl2_mixer sdl2_ttf
+```
+
 ```
 python -m venv .venv
 source .venv/bin/activate

@@ -2,19 +2,7 @@
 
 Owner: T
 """
-
-from gretchen.robot import Robot
 import time
-
-#def main():
-    # Initalize & start robot
-    #Device path to motor, camera
-    #   Ubuntu/Linux  - motor: '/dev/grt_motor', camera: '/dev/grt_cam'
-    #   Mac - motor: /dev/tty.usbserial-FT5WJ4JS', camera: '/dev/cu.usbserial-FT5WJ4JS' or 0
-    #   Windows - motor: 'COM4', camera: 0
- #   robot = Robot('/dev/tty.usbserial-FT94ELKF', 0)
-  #  robot.start()
-
 
 def react(robot, outcome):
     if outcome == "won":
@@ -45,6 +33,7 @@ def player_won_animation(robot,
          robot.move(0, head_down)
          time.sleep(0.05)
      robot.move(0,0)
+     time.sleep(0.5)
 
 def player_lost_animation(robot,
                           look_up=0.2,
@@ -67,6 +56,7 @@ def player_lost_animation(robot,
         robot.move(0, look_up)
         time.sleep(pause)
     robot.move(0,0)
+    time.sleep(0.5)
     
 
 

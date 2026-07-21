@@ -5,9 +5,16 @@ import time
 import pygame
 
 #Creating Path to sounds folder
-SOUNDS_FOLDER = Path(__file__).parent / "sounds"
+SOUNDS_FOLDER = Path(__file__).parent / "audio" / "sounds"
 
-#Global 
+#Background music tracks (kept as constants so the filename lives in one place)
+DUNGEON_MUSIC = "dungeon_theme.mp3"
+BOSS_MUSIC = "boss_music.mp3"
+MUSIC_VOLUME = 0.4        # normal background level
+DUCK_VOLUME = 0.12        # lowered level while the narrator is speaking
+SFX_VOLUME = 0.5          # one-shot stings (defeat / victory / game over)
+
+#Global
 is_narrator_speaking = False
 
 #Building function to initialize audio system
@@ -15,7 +22,7 @@ def initialize_audio():
     pygame.mixer.init()
 
 #Building function to play music
-def play_music(filename, loop=False, volume=1.0):
+def play_music(filename, loop=False, volume=SFX_VOLUME):
     music_path = SOUNDS_FOLDER / filename
 
     pygame.mixer.music.load(music_path)
@@ -62,45 +69,57 @@ def handle_event(event):
     global is_narrator_speaking
 
     if event == "game_started":
-        play_music("Dungeon of Agony.mp3", loop=True, volume=0.7)
+        play_music(DUNGEON_MUSIC, loop=True, volume=MUSIC_VOLUME)
 
     elif event == "narrator_started":
         is_narrator_speaking = True
-        fade_volume(0.2,duration=2)
+        fade_volume(DUCK_VOLUME,duration=2)
 
     elif event == "narrator_finished":
         is_narrator_speaking = False
-        fade_volume(0.7,duration=2)
-    
+        fade_volume(MUSIC_VOLUME,duration=2)
+
+    elif event == "rps_won":
+        # Evil Gretchen destroyed: play the defeat sting, then return to the dungeon track
+        stop_music()
+        play_music("gretchen_defeated.mp3")
+        while pygame.mixer.music.get_busy():
+            time.sleep(0.1)
+        play_music(DUNGEON_MUSIC, loop=True, volume=MUSIC_VOLUME)
+
+    elif event == "boss_started":
+        play_music(BOSS_MUSIC, loop=True, volume=MUSIC_VOLUME)
+
     elif event == "game_won":
         stop_music()
-        play_music("Victory.mp3")
-    
+        play_music("victory.mp3")
+
     elif event == "game_over":
         stop_music()
-        play_music("game_over_bad_chest.wav")
+        play_music("game_over.mp3")
 
 
-    
-
-initialize_audio()
 
 
-handle_event("game_started")
+# # test stuff    
 
-time.sleep(5)
+# initialize_audio()
 
-handle_event("narrator_started")
+# handle_event("game_started")
 
-time.sleep(4)
+# time.sleep(5)
 
-handle_event("narrator_finished")
+# handle_event("narrator_started")
 
-time.sleep(5)
+# time.sleep(4)
 
-handle_event("game_won")
+# handle_event("narrator_finished")
 
-input("Press Enter to end the test...")
+# time.sleep(5)
+
+# handle_event("game_won")
+
+# input("Press Enter to end the test...")
 
 
 

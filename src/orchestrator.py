@@ -5,9 +5,10 @@ Wires together gesture recognition, dice detection, narrator, and robot head.
 Owner: M
 """
 
+import time
 from enum import Enum
 
-from src.game_logic import resolve_rps, gretchen_move, LifePoints
+from src.game_logic import resolve_rps, gretchen_rps_move, gretchen_dice, LifePoints
 
 
 class GameState(Enum):
@@ -19,13 +20,14 @@ class GameState(Enum):
     TREASURE = "treasure"
 
 class Orchestrator:
-    def __init__(self, get_start_signal, get_player_move, get_dice_color, narrate, react, start_state=GameState.WAITING_FOR_START):
+    def __init__(self, get_start_signal, get_player_move, get_dice_color, narrate, react, play_audio, start_state=GameState.WAITING_FOR_START):
         self.state = start_state
         self.get_start_signal = get_start_signal
         self.get_player_move = get_player_move
         self.get_dice_color = get_dice_color
         self.narrate = narrate
         self.react = react
+        self.play_audio = play_audio
         self.life = LifePoints()
 
 
@@ -41,9 +43,11 @@ class Orchestrator:
             elif self.state == GameState.BOSS_FIGHT:
                 self._handle_boss_fight()
         print(f"Game ended: {self.state}")
+    
 
     def _handle_waiting_for_start(self):
         self.narrate("waiting_for_start")
+        self.play_audio("game_started")
         while True:
             if self.get_start_signal():
                 self.state = GameState.INTRO
@@ -58,7 +62,7 @@ class Orchestrator:
     def _handle_rps(self):
         while True:
             player_move = self.get_player_move()
-            g_move = gretchen_move()
+            g_move = gretchen_rps_move()
             result = resolve_rps(player_move, g_move)
             print(f"Player: {player_move}, result: {result}")
             result_text = {
@@ -66,39 +70,55 @@ class Orchestrator:
                 "gretchen": "you (Gretchen) won this round",
                 "tie": "this round was a tie",
             }[result]
-            self.narrate("rps_round", player_move=player_move.value, gretchen_move=g_move.value, result=result_text)
+            self.narrate("rps_round", player_move=player_move.value, gretchen_rps_move=g_move.value, result=result_text)
             if result != "tie":
                 break
             print("Tie! You need to play again.")
         if result == "player":
-            self.narrate("rps_win")
-            self.react("won")
+            self.play_audio("rps_won")   # gretchen_defeated 
+            self.react("won")            # head shake as Evil Gretchen dies
+            self.narrate("rps_win")      # "I'm dying — but now face Boss Gretchen"
             self.state = GameState.BOSS_FIGHT
         else:
-            self.narrate("rps_lose")
-            self.react("lost")
+            self.play_audio("game_over")   # lose music
+            self.react("lost")             
+            self.narrate("rps_lose")       # final "you're dead"
             self.state = GameState.GAME_OVER
 
 
     def _handle_boss_fight(self):
-        current = "gretchen"
+        time.sleep(2)                    # brief pause after Evil Gretchen's death
+        self.play_audio("boss_started")  # boss music 
+        self.narrate("boss_intro")       # Boss Gretchen introduces itself over it
+        current = "player"
         while self.life.winner() is None:
-            dice_color = self.get_dice_color()
-            self.life.apply_dice_damage(current, dice_color)
+            if current == "player":
+                dice_color = self.get_dice_color()
+            else:
+                dice_color = gretchen_dice()
+
+            target = "gretchen" if current == "player" else "player"
+            self.life.apply_dice_damage(target, dice_color)
+
             roller_text = "the player" if current == "player" else "you (Gretchen)"
+            target_text = "the player" if target == "player" else "you (Gretchen)"
             self.narrate(
                 "dice_round",
                 roller=roller_text,
+                target=target_text,
                 dice_color=dice_color,
                 player_life=self.life.player,
                 gretchen_life=self.life.gretchen,
             )
-            current = "player" if current != "player" else "gretchen"
+            current = "gretchen" if current == "player" else "player"
+
         if (self.life.winner() == "player"):
             self.narrate("boss_win")
+            self.play_audio("game_won")
             self.react("won")
             self.state = GameState.TREASURE
         else:
-            self.narrate("boss_lose")
-            self.react("lost")
+            self.play_audio("game_over")   # lose music
+            self.react("lost")             # head moves
+            self.narrate("boss_lose")      # final "you're dead"
             self.state = GameState.GAME_OVER

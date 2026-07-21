@@ -25,8 +25,8 @@ def resolve_rps(player_move, gretchen_move):
     return "player" if BEATS[player_move] == gretchen_move else "gretchen"
 
 
-# Returns a random move
-def gretchen_move():
+# Returns a random RPS move
+def gretchen_rps_move():
     return random.choice(list(Move))
 
 # Dice colour -> damage dealth
@@ -37,6 +37,9 @@ DICE_DAMAGE = {
 }
 
 STARTING_LIFE = 5
+
+def gretchen_dice():
+    return random.choice(list(DICE_DAMAGE))
 
 class LifePoints:
     def __init__(self):
