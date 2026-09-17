@@ -171,7 +171,7 @@ These behaviors are triggered through the game controller and executed by the ro
 
 I primarily worked on the game logic, the LLM prompts and TTS, and tying all the components together. Overall, I found the most difficult part of this was prompt engineering the LLM. This is because initially I didn't provide it with enough information (e.g. life points, whose move it is, past history). This led to the LLM hallucinating moves and trying to do its own calculations, and I thought there was a problem with the game logic itself rather than a hallucination. This took some time to figure out, but I solved it by adding a lot more detail to the prompts. Another challenge stemmed from the relatively short project timeline and small scope of the project, meaning we didn't agree on an interface before starting to code. This caused some type mismatches, particularly with `Move` and `gesture.py`. We fixed this by casting - not the best solution but it works.
 
-### A
+### Aiden Chung
 
 I was put on the task of implementing hand gesture capture for rock paper scissors. Utilizing MediaPipe library and their dataset, I was able to detect the three different gestures without having to train the model excessively. Using features in CV, I created dot images to emphasize hand movements, as well as put descriptive text that helps users understand how the rock paper scissor works, like adding the timer on the top since the user needs to put up their gestures for 2 seconds for the program to detect it. Cooperating with Maryam, we debugged issues that came from the difference in each others code, so the program would run smoothly.
 
